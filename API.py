@@ -7,7 +7,7 @@ from os import path
 consumer_key= "Your keys.."
 consumer_secret= "Your keys.."
 access_token= "Your Token.."
-access_token_secret= "Your Token.." 
+access_token_secret= "Your Token.."
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -24,6 +24,7 @@ if path.exists("./data/twitter.csv"):
 
 # Open/create a file to append data to
 csvFile = open('./data/twitter.csv', 'a',encoding="utf_8_sig")
+filename= './data/twitter.csv'
 
 #Use csv writer
 csvWriter = csv.writer(csvFile, lineterminator="\n",delimiter=";")
@@ -39,5 +40,7 @@ for tweet in tweepy.Cursor(api.search,
     csvWriter.writerow([tweet.created_at, tweet.text])
 
 print("\n¡Guardado!\n")
-
 csvFile.close()
+
+numline = sum(1 for line in csv.reader(filename))
+print (numline, "Tweets")
