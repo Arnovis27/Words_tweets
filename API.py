@@ -17,26 +17,27 @@ api = tweepy.API(auth, wait_on_rate_limit= True, wait_on_rate_limit_notify=True)
 
 places = api.geo_search(query="COLOMBIA", granularity="country")
 place_id = places[0].id  
-searchTerms= "#Disney"
+searchTerms= "#Cartagena"
 
 if path.exists("./data/twitter.csv"):
     remove('./data/twitter.csv')
 
 # Open/create a file to append data to
-csvFile = open('./data/twitter.csv', 'a')
+csvFile = open('./data/twitter.csv', 'a',encoding="utf_8_sig")
 
 #Use csv writer
-csvWriter = csv.writer(csvFile)
+csvWriter = csv.writer(csvFile, lineterminator="\n",delimiter=";")
 
 print("\nIniciando Guardado...")
 
 for tweet in tweepy.Cursor(api.search, 
                         q='{} place:{}'.format(searchTerms, place_id), 
-                        since = "2020-11-01", 
-                        until = "2020-11-03",
+                        since = "2020-09-30", 
+                        until = "2020-11-01",
                         lang = "es").items():
-    print (tweet.created_at, tweet.text,tweet.place.name)
-    csvWriter.writerow([tweet.created_at, tweet.text.encode('utf-8')])
+    #print(tweet.created_at, tweet.text,tweet.place.name)
+    csvWriter.writerow([tweet.created_at, tweet.text])
 
-print("\nGuardado Finalizado...")
+print("\n¡Guardado!\n")
+
 csvFile.close()
